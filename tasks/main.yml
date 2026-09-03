@@ -1,0 +1,18 @@
+---
+- name: Add Jellyfin Helm repo
+  kubernetes.core.helm_repository:
+    name: "{{ jellyfin_chart_repo_name }}"
+    repo_url: "{{ jellyfin_chart_repo_url }}"
+
+- name: Load Jellyfin values
+  ansible.builtin.set_fact:
+    jellyfin_values: "{{ lookup('ansible.builtin.template', role_path + '/templates/jellyfin-values.yaml.j2') | from_yaml }}"
+
+- name: Deploy Jellyfin via Helm
+  kubernetes.core.helm:
+    name: "{{ jellyfin_release_name }}"
+    chart_ref: "{{ jellyfin_chart_ref }}"
+    chart_version: "{{ jellyfin_chart_version or omit }}"
+    release_namespace: "{{ jellyfin_namespace }}"
+    create_namespace: true
+    values: "{{ jellyfin_values }}"

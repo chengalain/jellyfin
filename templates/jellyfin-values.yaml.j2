@@ -1,0 +1,22 @@
+image:
+  tag: "{{ jellyfin_image_tag }}"
+
+persistence:
+  config:
+    size: {{ jellyfin_config_storage_size }}
+    storageClass: {{ jellyfin_storage_class }}
+  media:
+    enabled: {{ jellyfin_media_storage_enabled | lower }}
+
+resources:
+  requests:
+    cpu: {{ jellyfin_resources_requests_cpu }}
+    memory: {{ jellyfin_resources_requests_memory }}
+  limits:
+    cpu: "{{ jellyfin_resources_limits_cpu }}"
+    memory: {{ jellyfin_resources_limits_memory }}
+
+metrics:
+  enabled: {{ jellyfin_service_monitor_enabled | lower }}
+  serviceMonitor:
+    enabled: {{ jellyfin_service_monitor_enabled | lower }}
